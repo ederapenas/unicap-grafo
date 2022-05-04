@@ -2,14 +2,14 @@ package grafo;
 
 public class Aresta {
     private final int id;
-    private Vertice inicio;
-    private Vertice fim;
+    private final int idVerticeInicio;
+    private final int idVerticeFinal;
     private double peso;
 
-    public Aresta(int id, Vertice inicio, Vertice fim, double peso){
+    public Aresta(int id, int idVerticeInicio, int idVerticeFinal, double peso){
         this.id = id;
-        this.inicio = inicio;
-        this.fim = fim;
+        this.idVerticeInicio = idVerticeInicio;
+        this.idVerticeFinal = idVerticeFinal;
         this.peso = peso;
     }
 
@@ -17,20 +17,12 @@ public class Aresta {
         return this.id;
     }
 
-    public Vertice getInicio(){
-        return this.inicio;
+    public int getIdVerticeInicio(){
+        return this.idVerticeInicio;
     }
 
-    public Vertice getFim(){
-        return this.fim;
-    }
-
-    public void setInicio(Vertice inicio){
-        this.inicio = inicio;
-    }
-
-    public void setFim(Vertice fim){
-        this.fim = fim;
+    public int getIdVerticeFinal(){
+        return this.idVerticeFinal;
     }
 
     public double getPeso(){

@@ -14,7 +14,7 @@ public class Vertice {
         this.nome = nome;
         this.arestas = new ArrayList<Aresta>();
         this.cor = 'b';
-        this.distancia = 0;
+        this.distancia = 100000;
     }
 
     public int getId(){
@@ -35,6 +35,10 @@ public class Vertice {
 
     public void adicionarAresta(Aresta aresta){
         this.arestas.add(aresta);
+    }
+
+    public ArrayList<Aresta> getArestas(){
+        return this.arestas;
     }
 
     public void setCor(char cor){
