@@ -49,4 +49,9 @@ public class Vertice {
         this.distancia = distancia;
     }
 
+    @Override
+    public String toString() {
+        System.out.println(nome);
+    }
+
 }

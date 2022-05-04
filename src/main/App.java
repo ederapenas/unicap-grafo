@@ -10,6 +10,7 @@ public class App {
         Grafo unicap = new Grafo();
         int op;
         String codigoInicio, codigoFim;
+        ArrayList menorCaminho;
 
         do{
             menu();
@@ -25,14 +26,16 @@ public class App {
                     codigoInicio = input.nextLine();
                     System.out.println("Informe o codigo do local em que você quer chegar: ");
                     codigoFim = input.nextLine();
-                    buscaExtensao(unicap, codigoInicio, codigoFim);
+                    menorCaminho = buscaExtensao(unicap, codigoInicio, codigoFim);
+                    exibeCaminho(menorCaminho);
                     break;
                 case 2:
                     System.out.println("Informe o codigo do local em que você se encontra: ");
                     codigoInicio = input.nextLine();
                     System.out.println("Informe o codigo do local em que você quer chegar: ");
                     codigoFim = input.nextLine();
-                    dijkstra(grafo, codigoInicio, codigoFim);
+                     menorCaminho = dijkstra(unicap, codigoInicio, codigoFim);
+                     exibeCaminho(menorCaminho);
                     break;
                 case 0:
                     break;
@@ -67,5 +70,16 @@ public class App {
 
 
         return menorCaminho;
+    }
+
+    public static void exibeCaminho(ArrayList<Vertice> caminho){
+        System.out.print("O caminho que você deve seguir é: ");
+        for(int i = 0; i < caminho.size(); i++){
+            System.out.print(caminho.get(i) + " ");
+            if(i != caminho.size()){
+                System.out.println("> ");
+            }
+
+        }
     }
 }
