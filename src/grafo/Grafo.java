@@ -25,6 +25,14 @@ public class Grafo {
         this.arestas.add(novaAresta);
     }
 
+    public ArrayList<Vertice> getVertices(){
+        return this.vertices;
+    }
+
+    public ArrayList<Aresta> getArestas(){
+        return this.arestas;
+    }
+
     public Vertice getVertice(int id){
         Vertice vertice = null;
 

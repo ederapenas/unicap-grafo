@@ -8,6 +8,7 @@ public class Vertice {
     private ArrayList<Aresta> arestas;
     private char cor;
     private double distancia;
+    private Vertice ant;
 
     public Vertice(int id, String nome){
         this.id = id;
@@ -15,6 +16,15 @@ public class Vertice {
         this.arestas = new ArrayList<Aresta>();
         this.cor = 'b';
         this.distancia = 9999;
+        this.ant = null;
+    }
+
+    public Vertice getAnt(){
+        return this.ant;
+    }
+
+    public void setAnt(Vertice ant){
+        this.ant = ant;
     }
 
     public int getId(){

@@ -3,6 +3,7 @@ package main;
 import grafo.*;
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class App {
     public static void main(String[] args) throws Exception {
@@ -10,7 +11,7 @@ public class App {
         Grafo unicap = new Grafo();
         int op;
         String codigoInicio, codigoFim;
-        ArrayList menorCaminho;
+        LinkedList menorCaminho;
 
         do{
             menu();
@@ -53,8 +54,52 @@ public class App {
         System.out.println("0 - Encerrar o programa.");
     }
 
-    public static ArrayList<Vertice> buscaExtensao(Grafo grafo, String codigoInicio, String codigoFim){
-        ArrayList<Vertice> menorCaminho;
+    public static LinkedList<Vertice> buscaExtensao(Grafo grafo, String codigoInicio, String codigoFim){
+        LinkedList<Vertice> menorCaminho = new LinkedList<Vertice>();
+        LinkedList<Vertice> naoVisitados = new LinkedList<Vertice>();
+        ArrayList<Vertice> vertices = grafo.getVertices();
+        Vertice inicio = grafo.getVerticeCodigo(codigoInicio);
+        Vertice fim = grafo.getVerticeCodigo(codigoFim);
+        Vertice atual;
+        Vertice prox;
+
+        for(int i = 0; i < vertices.size(); i++){
+            vertices.get(i).setCor('b');
+            vertices.get(i).setDistancia(9999);
+        }
+
+        naoVisitados.add(inicio);
+        while(!naoVisitados.isEmpty()){
+            atual = naoVisitados.getFirst();
+            for(int i = 0; i < atual.getArestas().size(); i++){
+                prox = grafo.getVertice(atual.getArestas().get(i).getIdVerticeFinal());
+                if(prox.getCor() == 'b'){
+                    prox.setCor('c');
+                    prox.setAnt(atual);
+                    naoVisitados.add(prox);
+                }
+
+                if(prox.getId() == fim.getId()){
+                    break;
+                }
+            }
+            atual.setCor('p');
+        }
+
+        Vertice adicionar = fim;
+        menorCaminho.addFirst(adicionar);
+        while(adicionar != null){
+            adicionar = adicionar.getAnt();
+            menorCaminho.addFirst(adicionar);
+        }
+
+        return menorCaminho;
+    }
+
+
+    public static LinkedList<Vertice> dijkstra(Grafo grafo, String codigoInicio, String codigoFim){
+        LinkedList<Vertice> menorCaminho;
+        LinkedList<Vertice> naoVisitados;
         Vertice inicio = grafo.getVerticeCodigo(codigoInicio);
         Vertice fim = grafo.getVerticeCodigo(codigoFim);
 
@@ -62,17 +107,7 @@ public class App {
         return menorCaminho;
     }
 
-
-    public static ArrayList<Vertice> dijkstra(Grafo grafo, String codigoInicio, String codigoFim){
-        ArrayList<Vertice> menorCaminho;
-        Vertice inicio = grafo.getVerticeCodigo(codigoInicio);
-        Vertice fim = grafo.getVerticeCodigo(codigoFim);
-
-
-        return menorCaminho;
-    }
-
-    public static void exibeCaminho(ArrayList<Vertice> caminho){
+    public static void exibeCaminho(LinkedList<Vertice> caminho){
         System.out.print("O caminho que você deve seguir é: ");
         for(int i = 0; i < caminho.size(); i++){
             System.out.print(caminho.get(i) + " ");
