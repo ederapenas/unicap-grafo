@@ -83,6 +83,8 @@ public class App {
                     break;
                 }
             }
+
+            naoVisitados.removeFirst();
             atual.setCor('p');
         }
 
