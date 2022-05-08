@@ -65,7 +65,6 @@ public class App {
 
         for(int i = 0; i < vertices.size(); i++){
             vertices.get(i).setCor('b');
-            vertices.get(i).setDistancia(9999);
         }
 
         naoVisitados.add(inicio);
