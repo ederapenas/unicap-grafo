@@ -61,7 +61,7 @@ public class Vertice {
 
     @Override
     public String toString() {
-        System.out.println(nome);
+        return nome;
     }
 
 }

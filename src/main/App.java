@@ -65,11 +65,13 @@ public class App {
 
         for(int i = 0; i < vertices.size(); i++){
             vertices.get(i).setCor('b');
+            vertices.get(i).setAnt(null);
         }
 
         naoVisitados.add(inicio);
         while(!naoVisitados.isEmpty()){
             atual = naoVisitados.getFirst();
+            naoVisitados.removeFirst();
             for(int i = 0; i < atual.getArestas().size(); i++){
                 prox = grafo.getVertice(atual.getArestas().get(i).getIdVerticeFinal());
                 if(prox.getCor() == 'b'){
@@ -83,15 +85,13 @@ public class App {
                 }
             }
 
-            naoVisitados.removeFirst();
             atual.setCor('p');
         }
 
         Vertice adicionar = fim;
-        menorCaminho.addFirst(adicionar);
         while(adicionar != null){
-            adicionar = adicionar.getAnt();
             menorCaminho.addFirst(adicionar);
+            adicionar = adicionar.getAnt();
         }
 
         return menorCaminho;
@@ -99,11 +99,42 @@ public class App {
 
 
     public static LinkedList<Vertice> dijkstra(Grafo grafo, String codigoInicio, String codigoFim){
-        LinkedList<Vertice> menorCaminho;
-        LinkedList<Vertice> naoVisitados;
+        LinkedList<Vertice> menorCaminho = new LinkedList<Vertice>();
+        LinkedList<Vertice> naoVisitados = new LinkedList<Vertice>();
+        ArrayList<Vertice> vertices = grafo.getVertices();
         Vertice inicio = grafo.getVerticeCodigo(codigoInicio);
         Vertice fim = grafo.getVerticeCodigo(codigoFim);
+        Vertice atual;
+        Vertice proximo;
 
+        for(int i = 0; i < vertices.size(); i++){
+            vertices.get(i).setDistancia(9999);
+            vertices.get(i).setAnt(null);
+        }
+
+        inicio.setDistancia(0);
+        naoVisitados.add(inicio);
+
+        while(!naoVisitados.isEmpty()){
+            atual = naoVisitados.pollFirst();
+            for(int i = 0; i < atual.getArestas().size(); i++){
+                proximo = grafo.getVertice(atual.getArestas().get(i).getIdVerticeFinal());
+                if((atual.getDistancia() + atual.getArestas().get(i).getPeso()) < proximo.getDistancia()){
+                    proximo.setAnt(atual);
+                    proximo.setDistancia(atual.getDistancia() + atual.getArestas().get(i).getPeso());
+                }
+
+                if(proximo.getId() == fim.getId()){
+                    break;
+                }
+            }
+
+            Vertice adicionar = fim;
+            while(adicionar != null){
+                menorCaminho.addFirst(adicionar);
+                adicionar = adicionar.getAnt();
+            }
+        }
 
         return menorCaminho;
     }
