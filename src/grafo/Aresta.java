@@ -28,4 +28,5 @@ public class Aresta {
     public double getPeso(){
         return this.peso;
     }
+
 }

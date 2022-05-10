@@ -4,14 +4,54 @@ import grafo.*;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.io.File;
+import java.io.FileNotFoundException;
 
 public class App {
     public static void main(String[] args) throws Exception {
+        File caminhoArquivo;
+        Scanner conteudo;
         Scanner input = new Scanner(System.in);
         Grafo unicap = new Grafo();
         int op;
         String codigoInicio, codigoFim;
         LinkedList menorCaminho;
+
+        try{
+            caminhoArquivo = new File("src/main/vertices.txt");
+            conteudo = new Scanner(caminhoArquivo);
+            while(conteudo.hasNextLine()){
+                String info = conteudo.nextLine();
+                String[] dividir = info.split(",");
+                int id = Integer.parseInt(dividir[0]);
+                String nome = dividir[1];
+
+                Vertice vertice = new Vertice(id, nome);
+                unicap.adicionarVertice(vertice);
+            }
+        } catch(FileNotFoundException e){
+            System.out.println("Houve um erro enquanto eu lia os vertices");
+            e.printStackTrace();
+        }
+
+        try{
+            caminhoArquivo = new File("src/main/arestas.txt");
+            conteudo = new Scanner(caminhoArquivo);
+            while(conteudo.hasNextLine()){
+                String info = conteudo.nextLine();
+                String[] dividir = info.split(",");
+                int id = Integer.parseInt(dividir[0]);
+                int idVerticeInicio = Integer.parseInt(dividir[1]);
+                int idVerticeFinal = Integer.parseInt(dividir[2]);
+                double peso = Double.parseDouble(dividir[3]);
+
+                Aresta aresta = new Aresta(id, idVerticeInicio, idVerticeFinal, peso);
+                unicap.adicionarAresta(aresta);
+            }
+        } catch(FileNotFoundException e){
+            System.out.println("Houve um erro enquanto eu lia as arestas");
+            e.printStackTrace();
+        }
 
         do{
             menu();
@@ -143,7 +183,7 @@ public class App {
         System.out.print("O caminho que você deve seguir é: ");
         for(int i = 0; i < caminho.size(); i++){
             System.out.print(caminho.get(i) + " ");
-            if(i != caminho.size()){
+            if(i < caminho.size() - 1){
                 System.out.println("> ");
             }
 
