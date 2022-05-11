@@ -12,10 +12,12 @@ public class App {
         File caminhoArquivo;
         Scanner conteudo;
         Scanner input = new Scanner(System.in);
+        Scanner codigos = new Scanner(System.in);
         Grafo unicap = new Grafo();
         int op;
         String codigoInicio, codigoFim;
         LinkedList menorCaminho;
+        ArrayList exibir;
 
         try{
             caminhoArquivo = new File("src/main/vertices.txt");
@@ -56,29 +58,37 @@ public class App {
         do{
             menu();
             op = input.nextInt();
-            while(op < 0 || op > 2){
-                System.out.println("Valor invalido, informe um valor de 0 a 2");
+            while(op < 0 || op > 3){
+                System.out.println("Valor invalido, informe um valor de 0 a 3");
                 op = input.nextInt();
             }
 
             switch(op){
                 case 1:
                     System.out.println("Informe o codigo do local em que você se encontra: ");
-                    codigoInicio = input.nextLine();
+                    codigoInicio = codigos.nextLine();
                     System.out.println("Informe o codigo do local em que você quer chegar: ");
-                    codigoFim = input.nextLine();
+                    codigoFim = codigos.nextLine();
                     menorCaminho = buscaExtensao(unicap, codigoInicio, codigoFim);
                     exibeCaminho(menorCaminho);
                     break;
                 case 2:
                     System.out.println("Informe o codigo do local em que você se encontra: ");
-                    codigoInicio = input.nextLine();
+                    codigoInicio = codigos.nextLine();
                     System.out.println("Informe o codigo do local em que você quer chegar: ");
-                    codigoFim = input.nextLine();
-                     menorCaminho = dijkstra(unicap, codigoInicio, codigoFim);
-                     exibeCaminho(menorCaminho);
+                    codigoFim = codigos.nextLine();
+                    menorCaminho = dijkstra(unicap, codigoInicio, codigoFim);
+                    exibeCaminho(menorCaminho);
+                    break;
+                case 3:
+                    exibir = new ArrayList<Vertice>();
+                    exibir = unicap.getVertices();
+                    for(int i = 0; i < exibir.size(); i++){
+                        System.out.println(exibir.get(i));
+                    }
                     break;
                 case 0:
+                    System.out.println("Adeus!");
                     break;
                 default:
                     System.out.println("Pane no sistema alguem me desconfigurou.");
@@ -91,6 +101,7 @@ public class App {
         System.out.println("O que você deseja fazer?");
         System.out.println("1 - Achar melhor caminho por busca em extensão.");
         System.out.println("2 - Achar melhor caminho por Dijkstra");
+        System.out.println("3 - Exibir todos os vertices.");
         System.out.println("0 - Encerrar o programa.");
     }
 
@@ -110,25 +121,21 @@ public class App {
 
         naoVisitados.add(inicio);
         while(!naoVisitados.isEmpty()){
-            atual = naoVisitados.getFirst();
-            naoVisitados.removeFirst();
-            for(int i = 0; i < atual.getArestas().size(); i++){
-                prox = grafo.getVertice(atual.getArestas().get(i).getIdVerticeFinal());
+            atual = naoVisitados.pollFirst();
+            ArrayList<Aresta> ligacoes = atual.getArestas();
+            for(int i = 0; i < ligacoes.size(); i++){
+                prox = grafo.getVertice(ligacoes.get(i).getIdVerticeFinal());
                 if(prox.getCor() == 'b'){
                     prox.setCor('c');
                     prox.setAnt(atual);
                     naoVisitados.add(prox);
                 }
-
-                if(prox.getId() == fim.getId()){
-                    break;
-                }
             }
-
             atual.setCor('p');
         }
 
-        Vertice adicionar = fim;
+        menorCaminho.add(fim);
+        Vertice adicionar = fim.getAnt();
         while(adicionar != null){
             menorCaminho.addFirst(adicionar);
             adicionar = adicionar.getAnt();
@@ -186,7 +193,7 @@ public class App {
             if(i < caminho.size() - 1){
                 System.out.println("> ");
             }
-
         }
+        System.out.println("");
     }
 }
